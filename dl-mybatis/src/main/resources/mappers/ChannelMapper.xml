@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dl.common.dao.story.impl.ChannelDaoImpl">
+    <resultMap id="BaseResultMap" type="com.dl.common.model.entity.story.Channel" >
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="channelCode" property="channelCode" jdbcType="VARCHAR" />
+		<result column="channelName" property="channelName" jdbcType="VARCHAR" />
+		<result column="sort" property="sort" jdbcType="VARCHAR" />
+		<result column="cacheLimit" property="cacheLimit" jdbcType="VARCHAR" />
+		<result column="isDefault" property="isDefault" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="updateTime" property="updateTime" jdbcType="VARCHAR" />
+	</resultMap>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+       INSERT INTO tbl_channel
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" >id, </if>
+			<if test="version != null and version != ''" >version, </if>
+			<if test="channelCode != null and channelCode != ''" >channelCode, </if>
+			<if test="channelName != null and channelName != ''" >channelName, </if>
+			<if test="sort != null and sort != ''" >sort, </if>
+			<if test="isDefault != null and isDefault != ''" >isDefault, </if>
+			<if test="status != null and status != ''" >status, </if>
+			<if test="cacheLimit != null and cacheLimit != ''" >cacheLimit, </if>
+			<if test="createTime != null and createTime != ''" >createTime, </if>
+			<if test="createTime == null or createTime == ''">createTime, </if> 
+			<if test="updateTime != null and updateTime != ''" >updateTime, </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" > #{id,jdbcType=VARCHAR}, </if>
+			<if test="version != null and version != ''" > #{version,jdbcType=VARCHAR}, </if>
+			<if test="channelCode != null and channelCode != ''" > #{channelCode,jdbcType=VARCHAR}, </if>
+			<if test="channelName != null and channelName != ''" > #{channelName,jdbcType=VARCHAR}, </if>
+			<if test="sort != null and sort != ''" > #{sort,jdbcType=VARCHAR}, </if>
+			<if test="isDefault != null and isDefault != ''" > #{isDefault,jdbcType=VARCHAR}, </if>
+			<if test="status != null and status != ''" > #{status,jdbcType=VARCHAR}, </if>
+			<if test="cacheLimit != null and cacheLimit != ''" > #{cacheLimit,jdbcType=VARCHAR}, </if>
+			<if test="createTime != null and createTime != ''" > #{createTime,jdbcType=VARCHAR}, </if>
+			<if test="createTime == null or createTime == ''">NOW(),</if>
+			<if test="updateTime != null and updateTime != ''" > #{updateTime,jdbcType=VARCHAR}, </if>
+		 </trim>   
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO tbl_channel (id,
+            version, channelCode, channelName, sort,cacheLimit, isDefault, 
+            status, createTime, updateTime
+        ) VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+        (	
+			#{item.id,jdbcType=VARCHAR},
+			#{item.version,jdbcType=VARCHAR},  
+			#{item.channelCode,jdbcType=VARCHAR},  
+			#{item.channelName,jdbcType=VARCHAR},  
+			#{item.sort,jdbcType=VARCHAR},  
+			#{item.cacheLimit,jdbcType=VARCHAR}, 
+			#{item.isDefault,jdbcType=VARCHAR},  
+			#{item.status,jdbcType=VARCHAR},  
+			NOW(), 
+			#{item.updateTime,jdbcType=VARCHAR} 
+        
+		)
+		</foreach>
+    </insert>
+
+	<select id="selectById" resultMap="BaseResultMap">
+        SELECT id as ID, 
+            version, channelCode, channelName, sort,cacheLimit, isDefault, 
+            status, createTime, updateTime
+        FROM tbl_channel
+		WHERE id = #{id,jdbcType=VARCHAR}
+    </select>
+	
+	<select id="selectList" resultMap="BaseResultMap">
+        SELECT id as ID, 
+            version, channelCode, channelName, sort,cacheLimit, isDefault, 
+            status, createTime, updateTime
+        FROM tbl_channel
+		<where>1=1
+            <if test="version != null and version != '' ">and version = #{version} </if>
+            <if test="channelCode != null and channelCode != '' ">and channelCode = #{channelCode} </if>
+            <if test="channelName != null and channelName != '' ">and channelName = #{channelName} </if>
+            <if test="isDefault != null">and isDefault = #{isDefault} </if>
+            <if test="status != null">and status = #{status} </if>
+            <if test="createTime != null and createTime != '' ">and createTime = #{createTime} </if>
+            <if test="updateTime != null and updateTime != '' ">and updateTime = #{updateTime} </if>
+		</where>
+		order by sort asc;
+    </select>
+    <select id="selectChannelList" resultMap="BaseResultMap">
+        SELECT channelCode, channelName,cacheLimit,sort
+        FROM tbl_channel
+		<where>1=1
+            <if test="channelCode != null and channelCode != '' ">and channelCode = #{channelCode} </if>
+            <if test="channelName != null and channelName != '' ">and channelName = #{channelName} </if>
+            <if test="isDefault != null">and isDefault = #{isDefault} </if>
+            <if test="status != null">and status = #{status} </if>
+		</where>
+		order by sort asc;
+    </select>
+	
+    <update id="update" parameterType="com.dl.common.model.entity.story.Channel">
+        UPDATE tbl_channel
+        <set>
+            <if test="version != null and version != '' "> version = #{version}, </if>
+            <if test="channelCode != null and channelCode != '' "> channelCode = #{channelCode}, </if>
+            <if test="channelName != null and channelName != '' "> channelName = #{channelName}, </if>
+            <if test="sort != null and sort != '' "> sort = #{sort}, </if>
+            <if test="isDefault != null and isDefault != '' "> isDefault = #{isDefault}, </if>
+            <if test="status != null and status != '' "> status = #{status}, </if>
+            <if test="createTime != null and createTime != '' "> createTime = #{createTime}, </if>
+            <if test="updateTime != null and updateTime != '' "> updateTime = #{updateTime}, </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+	
+	<update id="batchUpdate" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator=";">
+			UPDATE tbl_channel
+			<set>
+				<if test="version != null and version != '' "> version = #{item.version}, </if>
+				<if test="channelCode != null and channelCode != '' "> channelCode = #{item.channelCode}, </if>
+				<if test="channelName != null and channelName != '' "> channelName = #{item.channelName}, </if>
+				<if test="sort != null and sort != '' "> sort = #{item.sort}, </if>
+				<if test="isDefault != null and isDefault != '' "> isDefault = #{item.isDefault}, </if>
+				<if test="status != null and status != '' "> status = #{item.status}, </if>
+				<if test="createTime != null and createTime != '' "> createTime = #{item.createTime}, </if>
+				<if test="updateTime != null and updateTime != '' "> updateTime = #{item.updateTime}, </if>
+			</set>
+			WHERE id = #{item.id}
+		</foreach>
+    </update>
+	
+    <delete id="deleteById">
+        DELETE FROM tbl_channel
+        WHERE id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="batchDelete">
+		<foreach collection="list" item="item" index="index" separator=";">
+			DELETE FROM tbl_channel
+			WHERE id = #{item.id,jdbcType=VARCHAR}
+		</foreach>
+    </delete>
+	
+	<!-- 根据板块编码查询板块信息 -->
+	<select id="selectByChannelCode" resultMap="BaseResultMap">
+		SELECT id as ID, 
+            version, channelCode, channelName, sort,cacheLimit, isDefault, 
+            status, createTime, updateTime
+        FROM tbl_channel
+		WHERE channelCode = #{channelCode,jdbcType=VARCHAR}
+	</select>
+</mapper>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dl.common.dao.story.impl.StoryAttentionDaoImpl">
+    <resultMap id="BaseResultMap" type="com.dl.common.model.entity.story.StoryAttention" >
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="attentionId" property="attentionId" jdbcType="VARCHAR" />
+		<result column="storyId" property="storyId" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="updateTime" property="updateTime" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="storyResultMap" type="com.dl.common.model.app.req.StoryResponse" >
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="attentionTitle" property="attentionTitle" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="rootId" property="rootId" jdbcType="VARCHAR" />
+		<result column="content1" property="content1" jdbcType="VARCHAR" />
+		<result column="color1" property="color1" jdbcType="VARCHAR" />
+		<result column="content2" property="content2" jdbcType="VARCHAR" />
+		<result column="color2" property="color2" jdbcType="VARCHAR" />
+		<result column="content3" property="content3" jdbcType="VARCHAR" />
+		<result column="color3" property="color3" jdbcType="VARCHAR" />
+		<result column="background" property="background" jdbcType="VARCHAR" />
+		<result column="isEndingShow" property="isEndingShow" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="clickCount" property="clickCount" jdbcType="VARCHAR" />
+		<result column="collectCount" property="collectCount" jdbcType="VARCHAR" />
+		<result column="followCount" property="followCount" jdbcType="VARCHAR" />
+		<result column="readCount" property="readCount" jdbcType="VARCHAR" />
+		<result column="rewardCount" property="rewardCount" jdbcType="VARCHAR" />
+		<result column="levelNum" property="levelNum" jdbcType="VARCHAR" />
+		<result column="parentId" property="parentId" jdbcType="VARCHAR" />
+		<result column="parentTitle" property="parentTitle" jdbcType="VARCHAR" />
+		<association property="user" javaType="com.dl.common.model.entity.user.User">
+			<result column="nickName" property="nickName" jdbcType="VARCHAR" />
+			<result column="remark" property="remark" jdbcType="VARCHAR" />
+			<result column="imgUrl" property="imgUrl" jdbcType="VARCHAR" />
+		</association>
+	</resultMap> 
+	
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+       INSERT INTO tbl_story_attention
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" >id, </if>
+			<if test="userId != null and userId != ''" >userId, </if>
+			<if test="title != null and title != ''" >title, </if>
+			<if test="attentionId != null and attentionId != ''" >attentionId, </if>
+			<if test="storyId != null and storyId != ''" >storyId, </if>
+			<if test="type != null and type != ''" >type, </if>
+			<if test="createTime != null and createTime != ''" >createTime, </if>
+			<if test="createTime == null or createTime == ''">createTime, </if> 
+			<if test="updateTime != null and updateTime != ''" >updateTime, </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" > #{id,jdbcType=VARCHAR}, </if>
+			<if test="userId != null and userId != ''" > #{userId,jdbcType=VARCHAR}, </if>
+			<if test="title != null and title != ''" > #{title,jdbcType=VARCHAR}, </if>
+			<if test="attentionId != null and attentionId != ''" > #{attentionId,jdbcType=VARCHAR}, </if>
+			<if test="storyId != null and storyId != ''" > #{storyId,jdbcType=VARCHAR}, </if>
+			<if test="type != null and type != ''" > #{type,jdbcType=VARCHAR}, </if>
+			<if test="createTime != null and createTime != ''" > #{createTime,jdbcType=VARCHAR}, </if>
+			<if test="createTime == null or createTime == ''">NOW(),</if>
+			<if test="updateTime != null and updateTime != ''" > #{updateTime,jdbcType=VARCHAR}, </if>
+		 </trim>   
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO tbl_story_attention (
+            userId, title, attentionId, storyId, type, 
+            createTime
+        ) VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+        (	
+			#{item.userId,jdbcType=VARCHAR},  
+			#{item.title,jdbcType=VARCHAR},  
+			#{item.attentionId,jdbcType=VARCHAR},  
+			#{item.storyId,jdbcType=VARCHAR},  
+			#{item.type,jdbcType=VARCHAR},  
+			NOW()
+        
+		)
+		</foreach>
+    </insert>
+
+	<select id="selectById" resultMap="BaseResultMap">
+        SELECT id as ID, 
+            userId, title, attentionId, storyId, type, 
+            createTime, updateTime
+        FROM tbl_story_attention
+		WHERE id = #{id,jdbcType=VARCHAR}
+    </select>
+	
+	<select id="selectList" resultMap="BaseResultMap">
+        SELECT id as ID, 
+            userId, title, attentionId, storyId, type, 
+            createTime, updateTime
+        FROM tbl_story_attention
+		<where>1=1
+            <if test="userId != null and userId != '' ">and userId = #{userId} </if>
+            <if test="title != null and title != '' ">and title = #{title} </if>
+            <if test="attentionId != null and attentionId != '' ">and attentionId = #{attentionId} </if>
+            <if test="storyId != null and storyId != '' ">and storyId = #{storyId} </if>
+            <if test="type != null and type != '' ">and type = #{type} </if>
+            <if test="createTime != null and createTime != '' ">and createTime = #{createTime} </if>
+            <if test="updateTime != null and updateTime != '' ">and updateTime = #{updateTime} </if>
+		</where>
+    </select>
+	
+    <update id="update" parameterType="com.dl.common.model.entity.story.StoryAttention">
+        UPDATE tbl_story_attention
+        <set>
+            <if test="userId != null and userId != '' "> userId = #{userId}, </if>
+            <if test="title != null and title != '' "> title = #{title}, </if>
+            <if test="attentionId != null and attentionId != '' "> attentionId = #{attentionId}, </if>
+            <if test="storyId != null and storyId != '' "> storyId = #{storyId}, </if>
+            <if test="type != null and type != '' "> type = #{type}, </if>
+            <if test="createTime != null and createTime != '' "> createTime = #{createTime}, </if>
+            <if test="updateTime != null and updateTime != '' "> updateTime = #{updateTime}, </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+	
+	<update id="batchUpdate" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator=";">
+			UPDATE tbl_story_attention
+			<set>
+				<if test="userId != null and userId != '' "> userId = #{item.userId}, </if>
+				<if test="title != null and title != '' "> title = #{item.title}, </if>
+				<if test="attentionId != null and attentionId != '' "> attentionId = #{item.attentionId}, </if>
+				<if test="storyId != null and storyId != '' "> storyId = #{item.storyId}, </if>
+				<if test="type != null and type != '' "> type = #{item.type}, </if>
+				<if test="createTime != null and createTime != '' "> createTime = #{item.createTime}, </if>
+				<if test="updateTime != null and updateTime != '' "> updateTime = #{item.updateTime}, </if>
+			</set>
+			WHERE id = #{item.id}
+		</foreach>
+    </update>
+	
+    <delete id="deleteById">
+        DELETE FROM tbl_story_attention
+        WHERE id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="batchDelete">
+		<foreach collection="list" item="item" index="index" separator=";">
+			DELETE FROM tbl_story_attention
+			WHERE id = #{item.id,jdbcType=VARCHAR}
+		</foreach>
+    </delete>
+	
+	<!-- 根据用户id，获取关注的故事列表 -->
+	<select id="selectListByUserId" resultMap="storyResultMap">
+		select t1.title as attentionTitle,t2.userId as userId,t2.title as title,
+				t2.rootId as rootId,t2.content1 as content1,t2.color1 as color1,
+				t2.content2 as content2,t2.color2 as color2,t2.content3 as content3,
+				t2.color3 as color3,t2.background as background,t2.isEndingShow as isEndingShow,
+				t2.clickCount as clickCount,t2.collectCount as collectCount,
+				t2.followCount as followCount,t2.readCount as readCount,
+				t2.rewardCount as rewardCount,t2.createTime as createTime,
+				t3.nickName as nickName,t3.imgUrl as imgUrl,t3.remark as remark
+		from tbl_story_attention t1
+		left join tbl_story t2 on t1.storyId = t2.id
+		left join tbl_user t3 on t1.attentionId = t3.id
+		where t1.userId = #{userId,jdbcType=VARCHAR} and t2.allowShow = 1
+		order by t1.createTime desc
+		limit #{index},#{pageSize}
+	</select>
+</mapper>

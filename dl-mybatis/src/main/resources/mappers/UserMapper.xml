@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dl.common.dao.user.impl.UserDaoImpl">
+    <resultMap id="BaseResultMap" type="com.dl.common.model.entity.user.User" >
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="loginName" property="loginName" jdbcType="VARCHAR" />
+		<result column="nickName" property="nickName" jdbcType="VARCHAR" />
+		<result column="wxAccount" property="wxAccount" jdbcType="VARCHAR" />
+		<result column="wbAccount" property="wbAccount" jdbcType="VARCHAR" />
+		<result column="qqAccount" property="qqAccount" jdbcType="VARCHAR" />
+		<result column="mobileNo" property="mobileNo" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="birth" property="birth" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="isManager" property="isManager" jdbcType="VARCHAR" />
+		<result column="imgUrl" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="pwdErrorCount" property="pwdErrorCount" jdbcType="VARCHAR" />
+		<result column="token" property="token" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="followCount" property="followCount" jdbcType="VARCHAR" />
+		<result column="fansCount" property="fansCount" jdbcType="VARCHAR" />
+		<result column="storyCount" property="storyCount" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="updateTime" property="updateTime" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		 id,version, loginName, nickName, wxAccount,wbAccount, qqAccount,mobileNo, email, password, sex, birth, 
+         remark, type, status, isManager, imgUrl,pwdErrorCount, token, address, followCount, fansCount, storyCount,
+         createTime, updateTime,storyCount
+	</sql>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+       INSERT INTO tbl_user
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" >id, </if>
+			<if test="version != null and version != ''" >version, </if>
+			<if test="loginName != null and loginName != ''" >loginName, </if>
+			<if test="nickName != null and nickName != ''" >nickName, </if>
+			<if test="wxAccount != null and wxAccount != ''" >wxAccount, </if>
+			<if test="wbAccount != null and wbAccount != ''" >wbAccount, </if>
+			<if test="qqAccount != null and qqAccount != ''" >qqAccount, </if>
+			<if test="mobileNo != null and mobileNo != ''" >mobileNo, </if>
+			<if test="email != null and email != ''" >email, </if>
+			<if test="password != null and password != ''" >password, </if>
+			<if test="sex != null and sex != ''" >sex, </if>
+			<if test="birth != null and birth != ''" >birth, </if>
+			<if test="remark != null and remark != ''" >remark, </if>
+			<if test="type != null and type != ''" >type, </if>
+			<if test="status != null and status != ''" >status, </if>
+			<if test="isManager != null and isManager != ''" >isManager, </if>
+			<if test="imgUrl != null and imgUrl != ''" >imgUrl, </if>
+			<if test="pwdErrorCount != null and pwdErrorCount != ''" >pwdErrorCount, </if>
+			<if test="token != null and token != ''" >token, </if>
+			<if test="address != null and address != ''" >address, </if>
+			<if test="followCount != null and followCount != ''" >followCount, </if>
+			<if test="fansCount != null and fansCount != ''" >fansCount, </if>
+			<if test="createTime != null and createTime != ''" >createTime, </if>
+			<if test="createTime == null or createTime == ''">createTime, </if> 
+			<if test="updateTime != null and updateTime != ''" >updateTime, </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" > #{id,jdbcType=VARCHAR}, </if>
+			<if test="version != null and version != ''" > #{version,jdbcType=VARCHAR}, </if>
+			<if test="loginName != null and loginName != ''" > #{loginName,jdbcType=VARCHAR}, </if>
+			<if test="nickName != null and nickName != ''" > #{nickName,jdbcType=VARCHAR}, </if>
+			<if test="wxAccount != null and wxAccount != ''" > #{wxAccount,jdbcType=VARCHAR}, </if>
+			<if test="wbAccount != null and wbAccount != ''" > #{wbAccount,jdbcType=VARCHAR}, </if>
+			<if test="qqAccount != null and qqAccount != ''" > #{qqAccount,jdbcType=VARCHAR}, </if>
+			<if test="mobileNo != null and mobileNo != ''" > #{mobileNo,jdbcType=VARCHAR}, </if>
+			<if test="email != null and email != ''" > #{email,jdbcType=VARCHAR}, </if>
+			<if test="password != null and password != ''" > #{password,jdbcType=VARCHAR}, </if>
+			<if test="sex != null and sex != ''" > #{sex,jdbcType=VARCHAR}, </if>
+			<if test="birth != null and birth != ''" > #{birth,jdbcType=VARCHAR}, </if>
+			<if test="remark != null and remark != ''" > #{remark,jdbcType=VARCHAR}, </if>
+			<if test="type != null and type != ''" > #{type,jdbcType=VARCHAR}, </if>
+			<if test="status != null and status != ''" > #{status,jdbcType=VARCHAR}, </if>
+			<if test="isManager != null and isManager != ''" > #{isManager,jdbcType=VARCHAR}, </if>
+			<if test="imgUrl != null and imgUrl != ''" > #{imgUrl,jdbcType=VARCHAR}, </if>
+			<if test="pwdErrorCount != null and pwdErrorCount != ''" > #{pwdErrorCount,jdbcType=VARCHAR}, </if>
+			<if test="token != null and token != ''" > #{token,jdbcType=VARCHAR}, </if>
+			<if test="address != null and address != ''" > #{address,jdbcType=VARCHAR}, </if>
+			<if test="followCount != null and followCount != ''" > #{followCount,jdbcType=VARCHAR}, </if>
+			<if test="fansCount != null and fansCount != ''" > #{fansCount,jdbcType=VARCHAR}, </if>
+			<if test="createTime != null and createTime != ''" > #{createTime,jdbcType=VARCHAR}, </if>
+			<if test="createTime == null or createTime == ''">NOW(),</if>
+			<if test="updateTime != null and updateTime != ''" > #{updateTime,jdbcType=VARCHAR}, </if>
+		 </trim>   
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO tbl_user (id,
+            version, loginName, nickName, wxAccount, qqAccount, 
+            mobileNo, email, password, sex, birth, 
+            remark, type, status, isManager, imgUrl, 
+            pwdErrorCount, token, address, followCount, fansCount, 
+            createTime, updateTime
+        ) VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+        (	
+			#{item.id,jdbcType=VARCHAR},
+			#{item.version,jdbcType=VARCHAR},  
+			#{item.loginName,jdbcType=VARCHAR},  
+			#{item.nickName,jdbcType=VARCHAR},  
+			#{item.wxAccount,jdbcType=VARCHAR},  
+			#{item.qqAccount,jdbcType=VARCHAR},  
+			#{item.mobileNo,jdbcType=VARCHAR},  
+			#{item.email,jdbcType=VARCHAR},  
+			#{item.password,jdbcType=VARCHAR},  
+			#{item.sex,jdbcType=VARCHAR},  
+			#{item.birth,jdbcType=VARCHAR},  
+			#{item.remark,jdbcType=VARCHAR},  
+			#{item.type,jdbcType=VARCHAR},  
+			#{item.status,jdbcType=VARCHAR},  
+			#{item.isManager,jdbcType=VARCHAR},  
+			#{item.imgUrl,jdbcType=VARCHAR},  
+			#{item.pwdErrorCount,jdbcType=VARCHAR},  
+			#{item.token,jdbcType=VARCHAR},  
+			#{item.address,jdbcType=VARCHAR},  
+			#{item.followCount,jdbcType=VARCHAR},  
+			#{item.fansCount,jdbcType=VARCHAR},  
+			NOW(), 
+			#{item.updateTime,jdbcType=VARCHAR} 
+        
+		)
+		</foreach>
+    </insert>
+
+	<select id="selectById" resultMap="BaseResultMap">
+        SELECT 
+        <include refid="Base_Column_List" />
+        FROM tbl_user
+		WHERE id = #{id,jdbcType=VARCHAR}
+    </select>
+	
+	<select id="selectList" resultMap="BaseResultMap">
+        SELECT 
+		<include refid="Base_Column_List" />
+        FROM tbl_user
+		<where>1=1
+            <if test="version != null and version != '' ">and version = #{version} </if>
+            <if test="loginName != null and loginName != '' ">and loginName = #{loginName} </if>
+            <if test="nickName != null and nickName != '' ">and nickName = #{nickName} </if>
+            <if test="wxAccount != null and wxAccount != '' ">and wxAccount = #{wxAccount} </if>
+            <if test="qqAccount != null and qqAccount != '' ">and qqAccount = #{qqAccount} </if>
+            <if test="mobileNo != null and mobileNo != '' ">and mobileNo = #{mobileNo} </if>
+            <if test="email != null and email != '' ">and email = #{email} </if>
+            <if test="password != null and password != '' ">and password = #{password} </if>
+            <if test="sex != null and sex != '' ">and sex = #{sex} </if>
+            <if test="birth != null and birth != '' ">and birth = #{birth} </if>
+            <if test="remark != null and remark != '' ">and remark = #{remark} </if>
+            <if test="type != null and type != '' ">and type = #{type} </if>
+            <if test="status != null and status != '' ">and status = #{status} </if>
+            <if test="isManager != null and isManager != '' ">and isManager = #{isManager} </if>
+            <if test="imgUrl != null and imgUrl != '' ">and imgUrl = #{imgUrl} </if>
+            <if test="pwdErrorCount != null and pwdErrorCount != '' ">and pwdErrorCount = #{pwdErrorCount} </if>
+            <if test="token != null and token != '' ">and token = #{token} </if>
+            <if test="address != null and address != '' ">and address = #{address} </if>
+            <if test="followCount != null and followCount != '' ">and followCount = #{followCount} </if>
+            <if test="fansCount != null and fansCount != '' ">and fansCount = #{fansCount} </if>
+            <if test="storyCount != null and storyCount != '' "> storyCount = #{storyCount}, </if>
+            <if test="createTime != null and createTime != '' ">and createTime = #{createTime} </if>
+            <if test="updateTime != null and updateTime != '' ">and updateTime = #{updateTime} </if>
+		</where>
+    </select>
+	
+    <update id="update" parameterType="com.dl.common.model.entity.user.User">
+        UPDATE tbl_user
+        <set>
+            <if test="version != null and version != '' "> version = #{version}, </if>
+            <if test="loginName != null and loginName != '' "> loginName = #{loginName}, </if>
+            <if test="nickName != null and nickName != '' "> nickName = #{nickName}, </if>
+            <if test="wxAccount != null and wxAccount != '' "> wxAccount = #{wxAccount}, </if>
+            <if test="wbAccount != null and wbAccount != '' "> wbAccount = #{wbAccount}, </if>
+            <if test="qqAccount != null and qqAccount != '' "> qqAccount = #{qqAccount}, </if>
+            <if test="mobileNo != null and mobileNo != '' "> mobileNo = #{mobileNo}, </if>
+            <if test="email != null and email != '' "> email = #{email}, </if>
+            <if test="password != null and password != '' "> password = #{password}, </if>
+            <if test="sex != null and sex != '' "> sex = #{sex}, </if>
+            <if test="birth != null and birth != '' "> birth = #{birth}, </if>
+            <if test="remark != null and remark != '' "> remark = #{remark}, </if>
+            <if test="type != null and type != '' "> type = #{type}, </if>
+            <if test="status != null and status != '' "> status = #{status}, </if>
+            <if test="isManager != null and isManager != '' "> isManager = #{isManager}, </if>
+            <if test="imgUrl != null and imgUrl != '' "> imgUrl = #{imgUrl}, </if>
+            <if test="pwdErrorCount != null and pwdErrorCount != '' "> pwdErrorCount = #{pwdErrorCount}, </if>
+            <if test="token != null and token != '' "> token = #{token}, </if>
+            <if test="address != null and address != '' "> address = #{address}, </if>
+            <if test="followCount != null and followCount != '' "> followCount = #{followCount}, </if>
+            <if test="fansCount != null and fansCount != '' "> fansCount = #{fansCount}, </if>
+            <if test="storyCount != null and storyCount != '' "> storyCount = #{storyCount}, </if>
+            <if test="createTime != null and createTime != '' "> createTime = #{createTime}, </if>
+            <if test="updateTime != null and updateTime != '' "> updateTime = #{updateTime}, </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+	
+	<update id="batchUpdate" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator=";">
+			UPDATE tbl_user
+			<set>
+				<if test="version != null and version != '' "> version = #{item.version}, </if>
+				<if test="loginName != null and loginName != '' "> loginName = #{item.loginName}, </if>
+				<if test="nickName != null and nickName != '' "> nickName = #{item.nickName}, </if>
+				<if test="wxAccount != null and wxAccount != '' "> wxAccount = #{item.wxAccount}, </if>
+				<if test="wbAccount != null and wbAccount != '' "> wbAccount = #{item.wxAccount}, </if>
+				<if test="qqAccount != null and qqAccount != '' "> qqAccount = #{item.qqAccount}, </if>
+				<if test="mobileNo != null and mobileNo != '' "> mobileNo = #{item.mobileNo}, </if>
+				<if test="email != null and email != '' "> email = #{item.email}, </if>
+				<if test="password != null and password != '' "> password = #{item.password}, </if>
+				<if test="sex != null and sex != '' "> sex = #{item.sex}, </if>
+				<if test="birth != null and birth != '' "> birth = #{item.birth}, </if>
+				<if test="remark != null and remark != '' "> remark = #{item.remark}, </if>
+				<if test="type != null and type != '' "> type = #{item.type}, </if>
+				<if test="status != null and status != '' "> status = #{item.status}, </if>
+				<if test="isManager != null and isManager != '' "> isManager = #{item.isManager}, </if>
+				<if test="imgUrl != null and imgUrl != '' "> imgUrl = #{item.imgUrl}, </if>
+				<if test="pwdErrorCount != null and pwdErrorCount != '' "> pwdErrorCount = #{item.pwdErrorCount}, </if>
+				<if test="token != null and token != '' "> token = #{item.token}, </if>
+				<if test="address != null and address != '' "> address = #{item.address}, </if>
+				<if test="followCount != null and followCount != '' "> followCount = #{item.followCount}, </if>
+				<if test="fansCount != null and fansCount != '' "> fansCount = #{item.fansCount}, </if>
+				<if test="storyCount != null and storyCount != '' "> storyCount = #{item.storyCount}, </if>
+				<if test="createTime != null and createTime != '' "> createTime = #{item.createTime}, </if>
+				<if test="updateTime != null and updateTime != '' "> updateTime = #{item.updateTime}, </if>
+			</set>
+			WHERE id = #{item.id}
+		</foreach>
+    </update>
+	
+    <delete id="deleteById">
+        DELETE FROM tbl_user
+        WHERE id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="batchDelete">
+		<foreach collection="list" item="item" index="index" separator=";">
+			DELETE FROM tbl_user
+			WHERE id = #{item.id,jdbcType=VARCHAR}
+		</foreach>
+    </delete>
+	
+	<!-- 根据账户名查询 -->
+	<select id = "selectByUserName" resultMap = "BaseResultMap">
+		select <include refid="Base_Column_List" />
+		from tbl_user
+		where loginName = #{userName,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据手机号查询 -->
+	<select id = "selectByMobileNo" resultMap = "BaseResultMap">
+		select <include refid="Base_Column_List" />
+		from tbl_user
+		where mobileNo = #{mobileNo,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据QQ号查询 -->
+	<select id = "selectByQq" resultMap = "BaseResultMap">
+		select <include refid="Base_Column_List" />
+		from tbl_user
+		where qqAccount = #{qqAccount,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据微信号查询 -->
+	<select id = "selectByWx" resultMap = "BaseResultMap">
+		select <include refid="Base_Column_List" />
+		from tbl_user
+		where wxAccount = #{wxAccount,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据微博号查询 -->
+	<select id = "selectByWb" resultMap = "BaseResultMap">
+		select <include refid="Base_Column_List" />
+		from tbl_user
+		where wbAccount = #{wbAccount,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 修改用户关注人数 +1 -->
+	<update id="addFollowCount">
+		update tbl_user
+		set followCount = followCount + 1
+		where id = #{userId,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 修改用户关注人数-1 -->
+	<update id="cutFollowCount">
+		update tbl_user
+		set followCount = followCount - 1
+		where id = #{userId,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 修改用户粉丝数 +1 -->
+	<update id="addFansCount">
+		update tbl_user
+		set fansCount = fansCount + 1
+		where id = #{userId,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 修改用户粉丝数-1 -->
+	<update id="cutFansCount">
+		update tbl_user
+		set fansCount = fansCount - 1
+		where id = #{userId,jdbcType=INTEGER}
+	</update>	
+	
+	<!-- 故事数+1 -->
+	<update id="addStoryCount">
+		update tbl_user
+		set storyCount = storyCount + 1
+		where id = #{userId,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 故事数-1 -->
+	<update id="cutStoryCount">
+		update tbl_user
+		set storyCount = storyCount - 1
+		where id = #{userId,jdbcType=INTEGER}
+	</update>
+</mapper>

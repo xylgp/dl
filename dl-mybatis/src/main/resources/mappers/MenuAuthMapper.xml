@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dl.common.dao.user.impl.MenuAuthDaoImpl">
+    <resultMap id="BaseResultMap" type="com.dl.common.model.entity.user.MenuAuth" >
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="menu_id" property="menuid" jdbcType="VARCHAR" />
+	</resultMap>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+       INSERT INTO tbl_menu_auth
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" >id, </if>
+			<if test="code != null and code != ''" >code, </if>
+			<if test="name != null and name != ''" >name, </if>
+			<if test="menuid != null and menuid != ''" >menu_id, </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" > #{id,jdbcType=VARCHAR}, </if>
+			<if test="code != null and code != ''" > #{code,jdbcType=VARCHAR}, </if>
+			<if test="name != null and name != ''" > #{name,jdbcType=VARCHAR}, </if>
+			<if test="menuid != null and menuid != ''" > #{menuid,jdbcType=VARCHAR}, </if>
+		 </trim>   
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO tbl_menu_auth (id,
+            code, name, menu_id
+        ) VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+        (	
+			#{item.id,jdbcType=VARCHAR},
+			#{item.code,jdbcType=VARCHAR},  
+			#{item.name,jdbcType=VARCHAR},  
+			#{item.menuid,jdbcType=VARCHAR} 
+        
+		)
+		</foreach>
+    </insert>
+
+	<select id="selectById" resultMap="BaseResultMap">
+        SELECT id as ID, 
+            code, name, menu_id AS menuid
+        FROM tbl_menu_auth
+		WHERE id = #{id,jdbcType=VARCHAR}
+    </select>
+	
+	<select id="selectList" resultMap="BaseResultMap">
+        SELECT id as ID, 
+            code, name, menu_id AS menuid
+        FROM tbl_menu_auth
+		<where>1=1
+            <if test="code != null and code != '' ">and code = #{code} </if>
+            <if test="name != null and name != '' ">and name = #{name} </if>
+            <if test="menuid != null and menuid != '' ">and menu_id = #{menuid} </if>
+		</where>
+    </select>
+	
+    <update id="update" parameterType="com.dl.common.model.entity.user.MenuAuth">
+        UPDATE tbl_menu_auth
+        <set>
+            <if test="code != null and code != '' "> code = #{code}, </if>
+            <if test="name != null and name != '' "> name = #{name}, </if>
+            <if test="menuid != null and menuid != '' "> menu_id = #{menuid}, </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+	
+	<update id="batchUpdate" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator=";">
+			UPDATE tbl_menu_auth
+			<set>
+				<if test="code != null and code != '' "> code = #{item.code}, </if>
+				<if test="name != null and name != '' "> name = #{item.name}, </if>
+				<if test="menuid != null and menuid != '' "> menu_id = #{item.menuid}, </if>
+			</set>
+			WHERE id = #{item.id}
+		</foreach>
+    </update>
+	
+    <delete id="deleteById">
+        DELETE FROM tbl_menu_auth
+        WHERE id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="batchDelete">
+		<foreach collection="list" item="item" index="index" separator=";">
+			DELETE FROM tbl_menu_auth
+			WHERE id = #{item.id,jdbcType=VARCHAR}
+		</foreach>
+    </delete>
+	
+	
+
+</mapper>

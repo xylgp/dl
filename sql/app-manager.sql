@@ -1,0 +1,70 @@
+CREATE TABLE `tbl_app_update_manager` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `versionName` varchar(50) NOT NULL,
+  `versionCode` varchar(50) NOT NULL,
+  `downloadUrl` varchar(100) NOT NULL,
+  `updateLog` varchar(150) DEFAULT NULL,
+  `platform` int(4) NOT NULL DEFAULT '1' COMMENT '平台: 1 android, 2 ios 3 winphone',
+  `remarks` text COMMENT '备注',
+  `createTime` datetime DEFAULT NULL,
+  `updateTime` datetime DEFAULT NULL,
+  `status` int(2) DEFAULT '1' COMMENT '状态： 0 不可用 ， 1 可用',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='APP 版本控制表';
+
+
+CREATE TABLE `tbl_file_version` (
+  `id` bigint(40) NOT NULL AUTO_INCREMENT,
+  `newsId` varchar(40) NOT NULL COMMENT '新闻编辑历史版本id',
+  `fileId` varchar(40) NOT NULL COMMENT '附件id',
+  `type` int(1) DEFAULT '0' COMMENT '附件类型 1：图片   2：  视频',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7462 DEFAULT CHARSET=utf8 COMMENT='附件历史版本表';
+
+CREATE TABLE `tbl_news_basic` (
+  `id` varchar(40) NOT NULL COMMENT 'id',
+  `version` varchar(40) DEFAULT '' COMMENT '版本',
+  `sectionCode` varchar(10) DEFAULT '' COMMENT '版块code',
+  `sectionName` varchar(20) DEFAULT '' COMMENT '版块名',
+  `title` varchar(50) DEFAULT '' COMMENT '标题',
+  `extract` varchar(200) DEFAULT '' COMMENT '摘要',
+  `content` longtext COMMENT '正文',
+  `userId` varchar(40) DEFAULT '' COMMENT '发布人id',
+  `createTime` datetime DEFAULT NULL COMMENT '发布时间',
+  `longitude` varchar(100) DEFAULT '' COMMENT '经度',
+  `latitude` varchar(100) DEFAULT '' COMMENT '纬度',
+  `location` varchar(200) DEFAULT '' COMMENT '坐标',
+  `likeCount` int(8) DEFAULT '0' COMMENT '点赞数',
+  `unlikeCount` int(8) DEFAULT '0' COMMENT '拍砖数',
+  `type` int(1) DEFAULT '0' COMMENT '类型(0:后台，1：身边，2：网红/范儿，3：一级爆料）',
+  `consumeType` int(1) DEFAULT '0' COMMENT '消费方式(0:未选，1：有偿提问，2：售卖图片，3：善捐)',
+  `isApplyAward` int(1) DEFAULT '0' COMMENT '是否申请奖励（0：否，1：是）',
+  `isShow` varchar(2) DEFAULT '1' COMMENT '是否展示(0:否，1：是)',
+  `showType` int(1) DEFAULT '0' COMMENT '图文类型（0：图文分离，1：图文混排）',
+  `questionAmount` int(4) DEFAULT '0' COMMENT '有偿提问金额',
+  `saleMax` int(4) DEFAULT '0' COMMENT '售卖价格',
+  `giftMax` int(4) DEFAULT '0' COMMENT '善捐上限',
+  `voteQuestion` varchar(300) DEFAULT '' COMMENT '投票问题',
+  `investQuestion` varchar(300) DEFAULT '' COMMENT '调查问题',
+  `hasBanner` int(1) DEFAULT '0' COMMENT '是否已做为banner区展示(0:否，1：是，2：不展示）',
+  `isHot` int(1) DEFAULT '0' COMMENT '是否为热点（0：否，1：是）',
+  `isRecommend` int(1) DEFAULT '0' COMMENT '是否推荐（0：否，1：是）',
+  `parentId` varchar(40) DEFAULT '' COMMENT '父新闻id',
+  `viewCount` int(8) DEFAULT '0' COMMENT '围观数',
+  `finalConfirm` varchar(40) DEFAULT '' COMMENT '最终审核人id',
+  `isAllowEditor` int(1) NOT NULL DEFAULT '1' COMMENT '新增是否允许再编辑(1：是，2：否)',
+  `editorStatus` int(1) NOT NULL DEFAULT '1' COMMENT '新闻库状态（1：稿源库，2：待编库，3：废弃库, 4:选取）',
+  `notice` varchar(200) DEFAULT '' COMMENT '公告（只有主新闻有）',
+  `hasFansGather` int(1) NOT NULL DEFAULT '1' COMMENT '是否邀请粉丝（1：否，2：是）',
+  `hasVideo` int(1) NOT NULL DEFAULT '1' COMMENT '是否有视频（1：否，2：是）',
+  `selectTime` datetime DEFAULT NULL COMMENT '选取时间',
+  `peopleNumber` int(5) NOT NULL DEFAULT '0' COMMENT '留言有赏平均分配人数',
+  `msgAward` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '留言有赏金额',
+  `brokeAmount` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '爆料金额（金额为0，则是免费爆料）',
+  `goodPeopleNumber` int(5) DEFAULT '0' COMMENT '优帖打赏人数',
+  `goodMsgAward` decimal(8,2) DEFAULT NULL COMMENT '优帖打赏金额',
+  `msgStopTime` datetime DEFAULT NULL COMMENT '优帖打赏结束时间',
+  `sort` int(4) DEFAULT '1000' COMMENT '爆料新闻排序字段',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='新闻主表';
+

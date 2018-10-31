@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+					        http://www.springframework.org/schema/beans/spring-beans.xsd   
+					        http://www.springframework.org/schema/context
+					        http://www.springframework.org/schema/context/spring-context.xsd   
+					        http://www.springframework.org/schema/mvc
+					        http://www.springframework.org/schema/mvc/spring-mvc.xsd   
+							http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+					        http://www.springframework.org/schema/util
+					        http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- 采用注释的方式配置bean -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.dl" />
+	<mvc:annotation-driven>
+		<!-- 消息转换器 -->
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes" value="text/html;charset=UTF-8" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<!-- json转化器 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJacksonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- proxy-target-class默认"false",更改为"ture"使用CGLib动态代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor >
+			<mvc:mapping path="/**"/>
+			<bean class="com.dl.common.framework.interceptors.BaseInterceptor">
+				<property name="nextInterceptor">
+					<array>
+						<bean class="com.dl.common.framework.interceptors.ParamCheckInterceptor"/>
+						<bean class="com.dl.common.framework.interceptors.TestInterceptor"/>
+					</array>
+				</property>
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+</beans>

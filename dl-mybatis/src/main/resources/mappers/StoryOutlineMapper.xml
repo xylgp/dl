@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dl.common.dao.story.impl.StoryOutlineDaoImpl">
+    <resultMap id="BaseResultMap" type="com.dl.common.model.entity.story.StoryOutline" >
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="rootId" property="rootId" jdbcType="VARCHAR" />
+		<result column="parentId" property="parentId" jdbcType="VARCHAR" />
+		<result column="levelNum" property="levelNum" jdbcType="VARCHAR" />
+		<result column="childNum" property="childNum" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="updateTime" property="updateTime" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="StoryResultMap" type="com.dl.common.model.app.req.StoryResponse" >
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="rootId" property="rootId" jdbcType="VARCHAR" />
+		<result column="parentId" property="parentId" jdbcType="VARCHAR" />
+		<result column="levelNum" property="levelNum" jdbcType="VARCHAR" />
+		<result column="content1" property="content1" jdbcType="VARCHAR" />
+		<result column="color1" property="color1" jdbcType="VARCHAR" />
+		<result column="content2" property="content2" jdbcType="VARCHAR" />
+		<result column="color2" property="color2" jdbcType="VARCHAR" />
+		<result column="content3" property="content3" jdbcType="VARCHAR" />
+		<result column="color3" property="color3" jdbcType="VARCHAR" />
+		<result column="background" property="background" jdbcType="VARCHAR" />
+		<result column="isEndingShow" property="isEndingShow" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<association property="user" javaType="com.dl.common.model.entity.user.User">
+			<result column="nickName" property="nickName" jdbcType="VARCHAR" />
+			<result column="remark" property="remark" jdbcType="VARCHAR" />
+			<result column="imgUrl" property="imgUrl" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+       INSERT INTO tbl_story_outline
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" >id, </if>
+			<if test="version != null and version != ''" >version, </if>
+			<if test="rootId != null and rootId != ''" >rootId, </if>
+			<if test="parentId != null and parentId != ''" >parentId, </if>
+			<if test="levelNum != null and levelNum != ''" >levelNum, </if>
+			<if test="childNum != null and childNum != ''" >childNum, </if>
+			<if test="createTime != null and createTime != ''" >createTime, </if>
+			<if test="createTime == null or createTime == ''">createTime, </if> 
+			<if test="updateTime != null and updateTime != ''" >updateTime, </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" > #{id,jdbcType=VARCHAR}, </if>
+			<if test="version != null and version != ''" > #{version,jdbcType=VARCHAR}, </if>
+			<if test="rootId != null and rootId != ''" > #{rootId,jdbcType=VARCHAR}, </if>
+			<if test="parentId != null and parentId != ''" > #{parentId,jdbcType=VARCHAR}, </if>
+			<if test="levelNum != null and levelNum != ''" > #{levelNum,jdbcType=VARCHAR}, </if>
+			<if test="childNum != null and childNum != ''" > #{childNum,jdbcType=VARCHAR}, </if>
+			<if test="createTime != null and createTime != ''" > #{createTime,jdbcType=VARCHAR}, </if>
+			<if test="createTime == null or createTime == ''">NOW(),</if>
+			<if test="updateTime != null and updateTime != ''" > #{updateTime,jdbcType=VARCHAR}, </if>
+		 </trim>   
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO tbl_story_outline (id,
+            version, rootId, parentId, levelNum, childNum, 
+            createTime, updateTime
+        ) VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+        (	
+			#{item.id,jdbcType=VARCHAR},
+			#{item.version,jdbcType=VARCHAR},  
+			#{item.rootId,jdbcType=VARCHAR},  
+			#{item.parentId,jdbcType=VARCHAR},  
+			#{item.levelNum,jdbcType=VARCHAR},  
+			#{item.childNum,jdbcType=VARCHAR},  
+			NOW(), 
+			#{item.updateTime,jdbcType=VARCHAR} 
+        
+		)
+		</foreach>
+    </insert>
+
+	<select id="selectById" resultMap="BaseResultMap">
+        SELECT id as ID, 
+            version, rootId, parentId, levelNum, childNum, 
+            createTime, updateTime
+        FROM tbl_story_outline
+		WHERE id = #{id,jdbcType=VARCHAR}
+    </select>
+	
+	<select id="selectList" resultMap="BaseResultMap">
+        SELECT id as ID, 
+            version, rootId, parentId, levelNum, childNum, 
+            createTime, updateTime
+        FROM tbl_story_outline
+		<where>1=1
+            <if test="version != null and version != '' ">and version = #{version} </if>
+            <if test="rootId != null and rootId != '' ">and rootId = #{rootId} </if>
+            <if test="parentId != null and parentId != '' ">and parentId = #{parentId} </if>
+            <if test="levelNum != null and levelNum != '' ">and levelNum = #{levelNum} </if>
+            <if test="childNum != null and childNum != '' ">and childNum = #{childNum} </if>
+            <if test="createTime != null and createTime != '' ">and createTime = #{createTime} </if>
+            <if test="updateTime != null and updateTime != '' ">and updateTime = #{updateTime} </if>
+		</where>
+    </select>
+	
+    <update id="update" parameterType="com.dl.common.model.entity.story.StoryOutline">
+        UPDATE tbl_story_outline
+        <set>
+            <if test="version != null and version != '' "> version = #{version}, </if>
+            <if test="rootId != null and rootId != '' "> rootId = #{rootId}, </if>
+            <if test="parentId != null and parentId != '' "> parentId = #{parentId}, </if>
+            <if test="levelNum != null and levelNum != '' "> levelNum = #{levelNum}, </if>
+            <if test="childNum != null and childNum != '' "> childNum = #{childNum}, </if>
+            <if test="createTime != null and createTime != '' "> createTime = #{createTime}, </if>
+            <if test="updateTime != null and updateTime != '' "> updateTime = #{updateTime}, </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+	
+	<update id="batchUpdate" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator=";">
+			UPDATE tbl_story_outline
+			<set>
+				<if test="version != null and version != '' "> version = #{item.version}, </if>
+				<if test="rootId != null and rootId != '' "> rootId = #{item.rootId}, </if>
+				<if test="parentId != null and parentId != '' "> parentId = #{item.parentId}, </if>
+				<if test="levelNum != null and levelNum != '' "> levelNum = #{item.levelNum}, </if>
+				<if test="childNum != null and childNum != '' "> childNum = #{item.childNum}, </if>
+				<if test="createTime != null and createTime != '' "> createTime = #{item.createTime}, </if>
+				<if test="updateTime != null and updateTime != '' "> updateTime = #{item.updateTime}, </if>
+			</set>
+			WHERE id = #{item.id}
+		</foreach>
+    </update>
+	
+    <delete id="deleteById">
+        DELETE FROM tbl_story_outline
+        WHERE id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="batchDelete">
+		<foreach collection="list" item="item" index="index" separator=";">
+			DELETE FROM tbl_story_outline
+			WHERE id = #{item.id,jdbcType=VARCHAR}
+		</foreach>
+    </delete>
+	
+	<!-- 查询故事大纲 -->
+	<select id="selectStoryOutline" resultMap="StoryResultMap">
+		select t1.id as id ,t1.rootId as rootId,t1.parentId as parentId,
+		       t1.levelNum as levelNum,t2.title as title,t2.content1 as content1,
+		       t2.content2 as content2,t2.content3 as content3,t2.color1 as color1,
+			   t2.color2 as color2,t2.color3 as color3,t2.background as background,
+			   t2.isEndingShow as isEndingShow,t3.nickName as nickName,
+			   t2.userId as userId,t2.createTime as createTime,
+			   t3.imgUrl as imgUrl,t3.remark as remark
+		from tbl_story_outline t1
+		left join tbl_story t2 on t1.id = t2.id
+		left join tbl_user t3 on t2.userId = t3.id
+		where t1.rootId = #{rootId,jdbcType=VARCHAR} and t2.allowShow = 1 and t2.status = 2
+		order by levelNum asc;
+	</select>
+</mapper>

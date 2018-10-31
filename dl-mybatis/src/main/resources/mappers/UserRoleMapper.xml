@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dl.common.dao.user.impl.UserRoleDaoImpl">
+    <resultMap id="BaseResultMap" type="com.dl.common.model.entity.user.UserRole" >
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="roleId" property="roleId" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+	</resultMap>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+       INSERT INTO tbl_user_role
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" >id, </if>
+			<if test="userId != null and userId != ''" >userId, </if>
+			<if test="roleId != null and roleId != ''" >roleId, </if>
+			<if test="status != null and status != ''" >status, </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != ''" > #{id,jdbcType=VARCHAR}, </if>
+			<if test="userId != null and userId != ''" > #{userId,jdbcType=VARCHAR}, </if>
+			<if test="roleId != null and roleId != ''" > #{roleId,jdbcType=VARCHAR}, </if>
+			<if test="status != null and status != ''" > #{status,jdbcType=VARCHAR}, </if>
+		 </trim>   
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO tbl_user_role (id,
+            userId, roleId, status
+        ) VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+        (	
+			#{item.id,jdbcType=VARCHAR},
+			#{item.userId,jdbcType=VARCHAR},  
+			#{item.roleId,jdbcType=VARCHAR},  
+			#{item.status,jdbcType=VARCHAR} 
+        
+		)
+		</foreach>
+    </insert>
+
+	<select id="selectById" resultMap="BaseResultMap">
+        SELECT id as ID, 
+            userId, roleId, status
+        FROM tbl_user_role
+		WHERE id = #{id,jdbcType=VARCHAR}
+    </select>
+	
+	<select id="selectList" resultMap="BaseResultMap">
+        SELECT id as ID, 
+            userId, roleId, status
+        FROM tbl_user_role
+		<where>1=1
+            <if test="userId != null and userId != '' ">and userId = #{userId} </if>
+            <if test="roleId != null and roleId != '' ">and roleId = #{roleId} </if>
+            <if test="status != null and status != '' ">and status = #{status} </if>
+		</where>
+    </select>
+	
+    <update id="update" parameterType="com.dl.common.model.entity.user.UserRole">
+        UPDATE tbl_user_role
+        <set>
+            <if test="userId != null and userId != '' "> userId = #{userId}, </if>
+            <if test="roleId != null and roleId != '' "> roleId = #{roleId}, </if>
+            <if test="status != null and status != '' "> status = #{status}, </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+	
+	<update id="batchUpdate" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator=";">
+			UPDATE tbl_user_role
+			<set>
+				<if test="userId != null and userId != '' "> userId = #{item.userId}, </if>
+				<if test="roleId != null and roleId != '' "> roleId = #{item.roleId}, </if>
+				<if test="status != null and status != '' "> status = #{item.status}, </if>
+			</set>
+			WHERE id = #{item.id}
+		</foreach>
+    </update>
+	
+    <delete id="deleteById">
+        DELETE FROM tbl_user_role
+        WHERE id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="batchDelete">
+		<foreach collection="list" item="item" index="index" separator=";">
+			DELETE FROM tbl_user_role
+			WHERE id = #{item.id,jdbcType=VARCHAR}
+		</foreach>
+    </delete>
+	
+	
+
+</mapper>
