@@ -3,7 +3,7 @@ package com.dl.common.utils.encryption.base64;
 import java.io.ByteArrayOutputStream;
 
 /**
- * base64 format encoding & decoding
+ * Base64编码，在二进制和字符串之间切换
  */
 public class Base64 {
 

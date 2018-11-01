@@ -64,7 +64,7 @@ public class DecryptFilter implements Filter{
 	}
 
 	/**
-	 * 后去安全校验开关，如果redis不存在，使用默认值
+	 * 获取安全校验开关，如果redis不存在，使用默认值
 	 * @return
 	 */
 	private Map<String, Object> getSwitchMap(){

@@ -1,57 +1,66 @@
 package com.dl.common.utils.encryption.AES;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.dl.common.utils.common.HexUtil;
 import com.dl.common.utils.encryption.base64.Base64;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * 对称加密：
+ * @author levi.liu
+ *
+ */
 public class AESUtils {
 	// 注意: 这里的password(秘钥必须是16位的)
 	public static final String AES_KEY = "QB_DeF_aB_DefgQw";
 	private static final String ALGORITHM_STR = "AES/ECB/PKCS5Padding";
-	private static final Logger logger = LoggerFactory.getLogger(AESUtils.class);
 
 	/**
-	 * 执行加密算法
-	 * 
+	 * 执行加密算法，基于16进制字符串，返回String
 	 * @param content
-	 *            : String
 	 * @param password
-	 *            : String
+	 * @return
+	 * @throws Exception
+	 */
+	public static String doEncryptStr(String content, String password) throws Exception {
+		byte[] encryptByte = doEncrypt(content, password);
+		return HexUtil.parseByte2HexStr(encryptByte);
+	}
+	
+	/**
+	 * 执行加密算法，返回字节数组
+	 * @param content
+	 * @param password
 	 * @return
 	 */
-	private static byte[] doEncrypt(String content, String password) throws Exception {
+	public static byte[] doEncrypt(String content, String password) throws Exception {
 		SecretKeySpec key = new SecretKeySpec(getKey(password), "AES");
 		Cipher cipher = Cipher.getInstance(ALGORITHM_STR);// algorithmStr
 		cipher.init(Cipher.ENCRYPT_MODE, key);// ʼ
-		return cipher.doFinal(content.getBytes("utf-8")); //
+		return cipher.doFinal(content.getBytes("utf-8"));
 	}
-
+	
+	public static String doDecryptStr(String content, String password) throws Exception {
+		return doDecrypt(HexUtil.parseHexStr2Byte(content), password);
+	}
+	
 	/**
 	 * 执行解密算法
-	 * 
 	 * @param content
-	 *            : String
 	 * @param password
-	 *            : String
 	 * @return byte[]
 	 */
-	private static byte[] doDecrypt(byte[] content, String password) throws Exception {
+	public static String doDecrypt(byte[] content, String password) throws Exception {
 		SecretKeySpec key = new SecretKeySpec(getKey(password), "AES");
 		Cipher cipher = Cipher.getInstance(ALGORITHM_STR);// algorithmStr
 		cipher.init(Cipher.DECRYPT_MODE, key);// ʼ
-		return cipher.doFinal(content); //
+		return new String(cipher.doFinal(content),"UTF-8"); //
 	}
 
 	/**
 	 * 获取passwoed的byte数组
-	 * 
 	 * @param password
-	 *            : String
 	 * @return byte[]
 	 */
 	private static byte[] getKey(String password) {
@@ -65,27 +74,21 @@ public class AESUtils {
 	}
 
 	/**
-	 * 对content加密--使用默认的aesKey进行加密
-	 * 
+	 * 使用默认key对content加密，基于Base64编码返回字符串
 	 * @param content
-	 *            : String
 	 * @return String
 	 */
-	public static String encryp(String content) throws Exception {
-		return encryp(content, AES_KEY);
+	public static String encrypt(String content) throws Exception {
+		return encrypt(content, AES_KEY);
 	}
 
 	/**
-	 * @Title: encryp
-	 * @Description: 使用指定的aesKey对content加密
-	 * @param content
-	 *            : String : 需要加密的内容
-	 * @param aesKey
-	 *            : String : aes加密的key
+	 * 使用指定的aesKey对content加密,基于Base64编码返回字符串
+	 * @param content 需要加密的内容
+	 * @param aesKey aes加密的key
 	 * @return String : 加密后的字符串
 	 */
-	public static String encryp(String content, String aesKey) throws Exception {
-		logger.debug("AES加密的内容：" + content + "\t\tAES加密的key：" + aesKey);
+	public static String encrypt(String content, String aesKey) throws Exception {
 		if (isEmpty(content)) {
 			throw new Exception("---------加密内容为空---------");
 		}
@@ -95,15 +98,12 @@ public class AESUtils {
 		// 执行加密
 		byte[] encodeByte = doEncrypt(content, aesKey);
 		String base64Str = Base64.encode(encodeByte);
-		logger.info("加密后的密文已Base64加密：" + base64Str);
 		return base64Str;
 	}
 
 	/**
-	 * 对content解密--使用默认的aesKey进行解密
-	 * 
+	 * 使用默认key对content解密
 	 * @param content
-	 *            : String
 	 * @return String
 	 */
 	public static String decrypt(String content) throws Exception {
@@ -111,37 +111,47 @@ public class AESUtils {
 	}
 
 	/**
-	 * @Title: encryp
-	 * @Description: 使用指定的aesKey对content解密
-	 * @param content
-	 *            : String : 需要解密的内容
-	 * @param aesKey
-	 *            : String : aes解密的key
+	 * 使用指定的aesKey对content解密
+	 * @param content 需要解密的内容
+	 * @param aesKey aes解密的key
 	 * @return String : 解密后的字符串
 	 */
 	public static String decrypt(String content, String aesKey) throws Exception {
-		// logger.info("AES解密的内容："+content +"\t\tAES解密的Key：");
 		if (isEmpty(content)) {
 			throw new Exception("---------解密内容为空---------");
 		}
 		if (StringUtils.isEmpty(aesKey)) {
 			aesKey = AES_KEY;
 		}
-		byte[] decodeByte = doDecrypt(Base64.decode(content), aesKey);
-		String decodeStr = new String(decodeByte);
-		// logger.info("解密后的明文已Base64解密：" + decodeStr);
-		return decodeStr;
+		return doDecrypt(Base64.decode(content), aesKey);
 	}
 
 	/**
 	 * 校验字符串是否为空
-	 * 
-	 * @param content
-	 *            : String
+	 * @param content String
 	 * @return 为空返回true 否则返回false
 	 */
 	private static boolean isEmpty(String content) {
 		return StringUtils.isEmpty(content);
+	}
+	
+	public static void main(String[] args) {
+		try {
+			String content = "111111111111111111111111111111112222222222222222222222222222222233333333333333333333333333333333";
+			String password = "23dsjr3er3e23eer";
+			String encry = doEncryptStr(content, password);
+			System.out.println("加密后数据:"+encry);
+			String decry = doDecryptStr(encry, password);
+			System.out.println("解密后数据:"+decry);
+			
+			String encry1 = encrypt(content, password);
+			System.out.println("加密后数据:"+encry1);
+			String decry1 = decrypt(encry1, password);
+			System.out.println("解密后数据:"+decry1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

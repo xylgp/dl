@@ -4,10 +4,15 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * 消息摘要：不可逆
+ * @author levi.liu
+ *
+ */
 public class MD5Util {
 
 	/***
-	 * MD5加码 生成32位md5码
+	 * 不带盐生成消息摘要
 	 */
 	public static String string2MD5(String inStr){
         try {  
@@ -15,7 +20,6 @@ public class MD5Util {
             try {
 				md.update(inStr.getBytes("UTF-8"));
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}  
             byte b[] = md.digest();  
@@ -42,7 +46,7 @@ public class MD5Util {
 	}
 	
 	/***
-	 * MD5加码 生成32位md5码
+	 * 带盐生成消息摘要
 	 */
 	public static String string2MD5(String inStr,String salt){
         try {  
@@ -51,7 +55,6 @@ public class MD5Util {
             	md.update(salt.getBytes());
 				md.update(inStr.getBytes("UTF-8"));
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}  
             byte b[] = md.digest();  
@@ -69,8 +72,6 @@ public class MD5Util {
             }  
             //32位加密  
             return buf.toString();  
-            // 16位的加密  
-            //return buf.toString().substring(8, 24);  
         } catch (NoSuchAlgorithmException e) {  
             e.printStackTrace();  
             return null;  
