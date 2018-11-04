@@ -60,15 +60,29 @@ public class MapUtils {
             return null;
         }
         Map<Integer,T> sortMap = new TreeMap<>(new MapKeyComparator());
- 
         sortMap.putAll(map);
- 
         return sortMap;
     }
  
     @SuppressWarnings("rawtypes")
     public static boolean isEmpty(Map map){
     	return ((map == null) || (map.isEmpty()));
+    }
+    
+    /**
+     * 校验map和对应的value是否为空，只要存在空值，就返回false
+     * @param map
+     * @return
+     */
+    public static boolean checkAllNotEmpty(Map<String, String> map){
+    	if(map.isEmpty()) return false;
+    	for(String key : map.keySet()){
+    		String value = map.get(key);
+    		if(StringUtils.isEmpty(value)){
+    			return false;
+    		}
+    	}
+    	return true;
     }
     
     /**
@@ -84,17 +98,6 @@ public class MapUtils {
             return str1.compareTo(str2);
         }
     }
-    public static void main(String[] args) {
-		Map<Integer,Object> map = new HashMap<>();
-		map.put(2, "LV2");
-		map.put(0, "LV0");
-		map.put(5, "LV5");
-		map.put(35, "LV35");
-		map.put(3, "LV3");
-		map.put(15, "LV15");
-		map.put(25, "LV25");
-		System.out.println(map);
-		Map<Integer,Object> sortMap = sortMapByKey(map);
-		System.out.println(sortMap);
-	}
+    
+    
 }
